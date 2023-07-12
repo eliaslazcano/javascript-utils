@@ -1,0 +1,14 @@
+{
+  "name": "@eliaslazcano/utils",
+  "version": "1.0.0",
+  "description": "Pacote de funcoes para resumir algoritimos repetitivos",
+  "main": "src/utils.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "eliaslazcano"
+  ],
+  "author": "Elias Lazcano Castro Neto",
+  "license": "ISC"
+}
