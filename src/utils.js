@@ -418,12 +418,12 @@ export const copiarTextoParaAreaTransferencia = async (texto) => {
  * @param removerAcentuacao - Caracteres com acentuação são trocados pelo equivalente sem acentuação.
  * @return {string} - Texto higienizado.
  */
-export const clearText = (string, removerEspacoRepetido = true, removerAcentuacao = true) => {
+export const limparTexto = (string, removerEspacoRepetido = true, removerAcentuacao = true) => {
   let text = (string || '').toString();
-  if (!text) return string;
-  if (removerEspacoRepetido) text = removerEspacosRepetidos(text)
-  if (removerAcentuacao) text = removerAcentos(text)
-  return text
+  if (!text) return text;
+  if (removerEspacoRepetido) text = removerEspacosRepetidos(text);
+  if (removerAcentuacao) text = removerAcentos(text);
+  return text;
 }
   
   
