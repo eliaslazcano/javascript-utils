@@ -21,8 +21,8 @@ export const encurtarNome = (fullname, useSecondName = false) => {
   
   /**
    * Extrai os digitos numericos da string.
-   * @param {string} string
-   * @returns {string}
+   * @param {string} string - String original que pode conter letras e numeros.
+   * @returns {string} - String contendo somente os caracteres numericos.
    */
   export const extrairNumeros = (string) => {
     const sanitizedString = (string || '').toString(); // Using a constant
@@ -40,7 +40,7 @@ export const encurtarNome = (fullname, useSecondName = false) => {
   }
   
   /**
-   * Remove acentos de uma string.
+   * Remove acentos dos caracteres da string.
    * @param {string} texto - O texto a ser higienizado.
    * @param {boolean} [rigoroso=false] - Define se deve ser usado um algoritmo mais rigoroso para remoção de acentos. O padrão é false.
    * @returns {string} - O texto sem acentos.

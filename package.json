@@ -9,6 +9,14 @@
   "keywords": [
     "eliaslazcano"
   ],
-  "author": "Elias Lazcano Castro Neto",
-  "license": "ISC"
+  "author": {
+    "name": "Elias Lazcano Castro Neto",
+    "email": "elias304162@gmail.com",
+    "url": "https://github.com/eliaslazcano"
+  },
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eliaslazcano/javascript-utils.git"
+  }
 }
