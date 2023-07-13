@@ -71,10 +71,10 @@ export const formatarNumero = (number) => {
  * @return {string}
  */
 export const formatarCPF = (cpf) => {
-  cpf = extrairNumeros((cpf || '').toString());
-  if (cpf.length !== 11) return '';
+  const digitos = extrairNumeros((cpf || '').toString());
+  if (digitos.length !== 11) return cpf;
   const regex = /^(\d{3})(\d{3})(\d{3})(\d{2})$/;
-  return cpf.replace(regex, '$1.$2.$3-$4');
+  return digitos.replace(regex, '$1.$2.$3-$4');
 }
 
 /**
@@ -83,17 +83,17 @@ export const formatarCPF = (cpf) => {
  * @return {string}
  */
 export const formatarCNPJ = (cnpj) => {
-  cnpj = extrairNumeros((cnpj || '').toString());
-  if (cnpj.length !== 14) return '';
+  const digitos = extrairNumeros((cnpj || '').toString());
+  if (digitos.length !== 14) return cnpj;
   const regex = /^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/;
-  return cnpj.replace(regex, '$1.$2.$3/$4-$5');
+  return digitos.replace(regex, '$1.$2.$3/$4-$5');
 }
 
 export const formatarCpfCnpj = (cpfCnpj) => {
-  cpfCnpj = extrairNumeros((cpfCnpj || '').toString());
-  if (cpfCnpj.length === 11) return formatarCPF(cpfCnpj);
-  if (cpfCnpj.length === 14) return formatarCNPJ(cpfCnpj);
-  return '';
+  const digitos = extrairNumeros((cpfCnpj || '').toString());
+  if (digitos.length === 11) return formatarCPF(digitos);
+  if (digitos.length === 14) return formatarCNPJ(digitos);
+  return cpfCnpj;
 }
 
 /**
