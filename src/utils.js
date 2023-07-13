@@ -71,9 +71,29 @@ export const formatarNumero = (number) => {
  * @return {string}
  */
 export const formatarCPF = (cpf) => {
-  if (!cpf || typeof cpf !== 'string') return '';
-  const regex = /^(\d{3})(\d{3})(\d{3})(\d{2})$/
-  return cpf.replace(regex, '$1.$2.$3-$4')
+  cpf = extrairNumeros((cpf || '').toString());
+  if (cpf.length !== 11) return '';
+  const regex = /^(\d{3})(\d{3})(\d{3})(\d{2})$/;
+  return cpf.replace(regex, '$1.$2.$3-$4');
+}
+
+/**
+ * Formata um CNPJ, introduzindo os pontos, barras e traços padrões.
+ * @param {string} cnpj
+ * @return {string}
+ */
+export const formatarCNPJ = (cnpj) => {
+  cnpj = extrairNumeros((cnpj || '').toString());
+  if (cnpj.length !== 14) return '';
+  const regex = /^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/;
+  return cnpj.replace(regex, '$1.$2.$3/$4-$5');
+}
+
+export const formatarCpfCnpj = (cpfCnpj) => {
+  cpfCnpj = extrairNumeros((cpfCnpj || '').toString());
+  if (cpfCnpj.length === 11) return formatarCPF(cpfCnpj);
+  if (cpfCnpj.length === 14) return formatarCNPJ(cpfCnpj);
+  return '';
 }
 
 /**
