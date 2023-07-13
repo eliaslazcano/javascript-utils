@@ -414,8 +414,8 @@ export const copiarTextoParaAreaTransferencia = async (texto) => {
 /**
  * Higieniza um texto usando a funções desta biblioteca unificadas.
  * @param {string} string - O texto a ser higienizado.
- * @param removerEspacoRepetido - Remove espaços duplicados ou maiores.
- * @param removerAcentuacao - Caracteres com acentuação são trocados pelo equivalente sem acentuação.
+ * @param {boolean} [removerEspacoRepetido=true] - Remove espaços duplicados ou maiores.
+ * @param {boolean} [removerAcentuacao=true] - Caracteres com acentuação são trocados pelo equivalente sem acentuação.
  * @return {string} - Texto higienizado.
  */
 export const limparTexto = (string, removerEspacoRepetido = true, removerAcentuacao = true) => {
