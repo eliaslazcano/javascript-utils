@@ -19,7 +19,7 @@ export const removerNumeros = (string) => {
 }
 
 /**
- * Remove acentos dos caracteres da string.
+ * Caracteres com acentuação são trocados pelo equivalente sem acentuação.
  * @param {string} texto - O texto a ser higienizado.
  * @param {boolean} [rigoroso=false] - Define se deve ser usado um algoritmo mais rigoroso para remoção de acentos. O padrão é false.
  * @returns {string} - O texto sem acentos.
@@ -409,6 +409,21 @@ export const copiarTextoParaAreaTransferencia = async (texto) => {
     return;
   }
   await navigator.clipboard.writeText(texto);
+}
+
+/**
+ * Higieniza um texto usando a funções desta biblioteca unificadas.
+ * @param {string} string - O texto a ser higienizado.
+ * @param removerEspacoRepetido - Remove espaços duplicados ou maiores.
+ * @param removerAcentuacao - Caracteres com acentuação são trocados pelo equivalente sem acentuação.
+ * @return {string} - Texto higienizado.
+ */
+export const clearText = (string, removerEspacoRepetido = true, removerAcentuacao = true) => {
+  let text = (string || '').toString();
+  if (!text) return string;
+  if (removerEspacoRepetido) text = removerEspacosRepetidos(text)
+  if (removerAcentuacao) text = removerAcentos(text)
+  return text
 }
   
   
