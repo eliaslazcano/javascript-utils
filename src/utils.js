@@ -427,7 +427,7 @@ export const limparTexto = (string, removerEspacoRepetido = true, removerAcentua
 }
 
 /**
- * Converte Blob para String binária.
+ * Converte Blob para String binária (UTF8).
  * @param {Blob} blob
  * @return {Promise<string>}
  */
@@ -436,13 +436,40 @@ export const converteBlobPraString = (blob) => {
     const reader = new FileReader();
 
     reader.onload = function (event) {
+      const arrayBuffer = event.target.result;
+      let byteArray = new Uint8Array(arrayBuffer);
+      let binaryString = '';
+      for (let i = 0; i < byteArray.length; i++) {
+        binaryString += String.fromCharCode(byteArray[i]);
+      }
+      resolve(binaryString);
+    };
+
+    reader.onerror = function () {
+      reject(new Error("Erro ao ler Blob como string binaria."));
+    };
+
+    reader.readAsArrayBuffer(blob);
+  });
+}
+
+/**
+ * Converte Blob para String base64.
+ * @param {Blob} blob
+ * @return {Promise<string>}
+ */
+export const converteBlobPraBase64 = (blob) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = function (event) {
       resolve(event.target.result);
     };
 
     reader.onerror = function () {
-      reject(new Error("Erro ao ler Blob como string."));
+      reject(new Error("Erro ao ler Blob como string base64."));
     };
 
-    reader.readAsText(blob);
+    reader.readAsDataURL(blob);
   });
 }
