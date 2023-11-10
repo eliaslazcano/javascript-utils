@@ -425,5 +425,24 @@ export const limparTexto = (string, removerEspacoRepetido = true, removerAcentua
   if (removerAcentuacao) text = removerAcentos(text);
   return text;
 }
-  
-  
+
+/**
+ * Converte Blob para String binária.
+ * @param {Blob} blob
+ * @return {Promise<string>}
+ */
+export const converteBlobPraString = (blob) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = function (event) {
+      resolve(event.target.result);
+    };
+
+    reader.onerror = function () {
+      reject(new Error("Erro ao ler Blob como string."));
+    };
+
+    reader.readAsText(blob);
+  });
+}
