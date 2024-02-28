@@ -473,3 +473,13 @@ export const converteBlobPraBase64 = (blob) => {
     reader.readAsDataURL(blob);
   });
 }
+
+/**
+ * Remove a extensão de um nome de arquivo.
+ * @param nomeArquivo - Nome do arquivo como este 'exemplo.pdf'.
+ * @return {string}
+ */
+export const removerExtensao = (nomeArquivo) => {
+  const ultimoPonto = nomeArquivo.lastIndexOf(".");
+  return (ultimoPonto !== -1) ? nomeArquivo.substring(0, ultimoPonto) : nomeArquivo;
+}
