@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.validarEmail = exports.validarCPF = exports.validarCNPJ = exports.tamanhoHumanizado = exports.removerObjetosDuplicados = exports.removerNumeros = exports.removerItensDuplicados = exports.removerExtensao = exports.removerEspacosRepetidos = exports.removerAcentos = exports.possuiObjetosDuplicados = exports.possuiItensDuplicados = exports.ordenarArrayDeObjetos = exports.nomeSiglas = exports.limparTexto = exports.formatarTelefone = exports.formatarNumero = exports.formatarCpfCnpj = exports.formatarCPF = exports.formatarCNPJ = exports.formatarCEP = exports.extrairNumeros = exports.extrairNomeArquivo = exports.extrairExtensaoArquivo = exports.encurtarNome = exports.copiarTextoParaAreaTransferencia = exports.converteBlobPraString = exports.converteBlobPraBase64 = exports.base64Decode = void 0;
+exports.validarEmail = exports.validarCPF = exports.validarCNPJ = exports.tamanhoHumanizado = exports.removerObjetosDuplicados = exports.removerNumeros = exports.removerItensDuplicados = exports.removerExtensao = exports.removerEspacosRepetidos = exports.removerAcentos = exports.possuiObjetosDuplicados = exports.possuiItensDuplicados = exports.ordenarArrayDeObjetos = exports.nomeSiglas = exports.limparTexto = exports.jwtPayload = exports.formatarTelefone = exports.formatarNumero = exports.formatarCpfCnpj = exports.formatarCPF = exports.formatarCNPJ = exports.formatarCEP = exports.extrairNumeros = exports.extrairNomeArquivo = exports.extrairExtensaoArquivo = exports.encurtarNome = exports.copiarTextoParaAreaTransferencia = exports.converteBlobPraString = exports.converteBlobPraBase64 = exports.base64Decode = void 0;
 /**
  * Extrai os digitos numericos da string.
  * @param {string} string - String original que pode conter letras e numeros.
@@ -471,4 +471,20 @@ exports.removerExtensao = removerExtensao;
 const base64Decode = encodedString => {
   if (typeof window !== 'undefined' && typeof window.atob === 'function') return decodeURIComponent(window.atob(encodedString));else if (typeof Buffer !== 'undefined') return Buffer.from(encodedString, 'base64').toString('ascii');else return '';
 };
+
+/**
+ * Obtem o paylod de um token JWT parseado para Javascript.
+ * @param {string} token
+ * @returns {any|null}
+ */
 exports.base64Decode = base64Decode;
+const jwtPayload = token => {
+  const partes = token.split('.');
+  if (partes.length !== 3) return null;
+  try {
+    return JSON.parse(base64Decode(partes[1]));
+  } catch (e) {
+    return null;
+  }
+};
+exports.jwtPayload = jwtPayload;
