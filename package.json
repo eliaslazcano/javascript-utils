@@ -6,6 +6,7 @@
   "module": "src/utils.js",
   "exports": {
     ".": {
+      "types": "./utils.d.ts",
       "require": "./dist/utils.js",
       "import": "./src/utils.js"
     }

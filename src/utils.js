@@ -483,3 +483,14 @@ export const removerExtensao = (nomeArquivo) => {
   const ultimoPonto = nomeArquivo.lastIndexOf(".");
   return (ultimoPonto !== -1) ? nomeArquivo.substring(0, ultimoPonto) : nomeArquivo;
 }
+
+/**
+ * Decodifica uma string que está em formato BASE64.
+ * @param encodedString
+ * @returns {string}
+ */
+export const base64Decode = encodedString => {
+  if (typeof window !== 'undefined' && typeof window.atob === 'function') return decodeURIComponent(window.atob(encodedString));
+  else if (typeof Buffer !== 'undefined') return Buffer.from(encodedString, 'base64').toString('ascii');
+  else return ''
+}

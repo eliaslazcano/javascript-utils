@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.validarEmail = exports.validarCPF = exports.validarCNPJ = exports.tamanhoHumanizado = exports.removerObjetosDuplicados = exports.removerNumeros = exports.removerItensDuplicados = exports.removerExtensao = exports.removerEspacosRepetidos = exports.removerAcentos = exports.possuiObjetosDuplicados = exports.possuiItensDuplicados = exports.ordenarArrayDeObjetos = exports.nomeSiglas = exports.limparTexto = exports.formatarTelefone = exports.formatarNumero = exports.formatarCpfCnpj = exports.formatarCPF = exports.formatarCNPJ = exports.formatarCEP = exports.extrairNumeros = exports.extrairNomeArquivo = exports.extrairExtensaoArquivo = exports.encurtarNome = exports.copiarTextoParaAreaTransferencia = exports.converteBlobPraString = exports.converteBlobPraBase64 = void 0;
+exports.validarEmail = exports.validarCPF = exports.validarCNPJ = exports.tamanhoHumanizado = exports.removerObjetosDuplicados = exports.removerNumeros = exports.removerItensDuplicados = exports.removerExtensao = exports.removerEspacosRepetidos = exports.removerAcentos = exports.possuiObjetosDuplicados = exports.possuiItensDuplicados = exports.ordenarArrayDeObjetos = exports.nomeSiglas = exports.limparTexto = exports.formatarTelefone = exports.formatarNumero = exports.formatarCpfCnpj = exports.formatarCPF = exports.formatarCNPJ = exports.formatarCEP = exports.extrairNumeros = exports.extrairNomeArquivo = exports.extrairExtensaoArquivo = exports.encurtarNome = exports.copiarTextoParaAreaTransferencia = exports.converteBlobPraString = exports.converteBlobPraBase64 = exports.base64Decode = void 0;
 /**
  * Extrai os digitos numericos da string.
  * @param {string} string - String original que pode conter letras e numeros.
@@ -461,4 +461,14 @@ const removerExtensao = nomeArquivo => {
   const ultimoPonto = nomeArquivo.lastIndexOf(".");
   return ultimoPonto !== -1 ? nomeArquivo.substring(0, ultimoPonto) : nomeArquivo;
 };
+
+/**
+ * Decodifica uma string que está em formato BASE64.
+ * @param encodedString
+ * @returns {string}
+ */
 exports.removerExtensao = removerExtensao;
+const base64Decode = encodedString => {
+  if (typeof window !== 'undefined' && typeof window.atob === 'function') return decodeURIComponent(window.atob(encodedString));else if (typeof Buffer !== 'undefined') return Buffer.from(encodedString, 'base64').toString('ascii');else return '';
+};
+exports.base64Decode = base64Decode;

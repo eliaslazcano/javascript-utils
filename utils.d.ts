@@ -203,4 +203,11 @@ declare module '@eliaslazcano/utils' {
    * @returns Nome do arquivo sem a extensão.
    */
   export function removerExtensao(nomeArquivo: string): string;
+
+  /**
+   * Decodifica uma string que está em formato BASE64.
+   * @param encodedString
+   * @returns String decodificada.
+   */
+  export function base64Decode(encodedString: string): string;
 }
