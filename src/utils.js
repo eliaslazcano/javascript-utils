@@ -494,3 +494,18 @@ export const base64Decode = encodedString => {
   else if (typeof Buffer !== 'undefined') return Buffer.from(encodedString, 'base64').toString('ascii');
   else return ''
 }
+
+/**
+ * Obtem o paylod de um token JWT parseado para Javascript.
+ * @param {string} token
+ * @returns {any|null}
+ */
+export const jwtPayload = token => {
+  const partes = token.split('.')
+  if (partes.length !== 3) return null
+  try {
+    return JSON.parse(base64Decode(partes[1]))
+  } catch (e) {
+    return null
+  }
+}

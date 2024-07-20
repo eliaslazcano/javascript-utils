@@ -210,4 +210,11 @@ declare module '@eliaslazcano/utils' {
    * @returns String decodificada.
    */
   export function base64Decode(encodedString: string): string;
+
+  /**
+   * Obtem o paylod de um token JWT parseado para Javascript.
+   * @param {string} token
+   * @returns {any|null}
+   */
+  export function jwtPayload(token: string): any | null;
 }
