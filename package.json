@@ -2,7 +2,7 @@
   "name": "@eliaslazcano/utils",
   "version": "1.0.18",
   "description": "Pacote de funcoes para resumir algoritimos repetitivos",
-  "main": "dist/index.js",
+  "main": "dist/utils.js",
   "exports": {
     ".": {
       "types": "./dist/utils.d.ts",
@@ -12,7 +12,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel src --out-dir dist && npx tsc"
+    "build": "npx tsc"
   },
   "keywords": [
     "eliaslazcano"
