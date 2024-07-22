@@ -509,3 +509,24 @@ export const jwtPayload = token => {
     return null
   }
 }
+
+/**
+ * Verifica se a string é um token JWT.
+ * @param {string} token
+ */
+export const jwtCheck = token => {
+  if (!token || typeof token !== 'string') return false
+  const parts = token.split('.')
+  if (parts.length !== 3) return false
+
+  try {
+    const header = JSON.parse(base64Decode(parts[0]))
+    const payload = JSON.parse(base64Decode(parts[1]))
+    const signature = parts[2]
+    if (!header || !payload || !signature) return false
+  } catch (e) {
+    return false
+  }
+
+  return true
+}

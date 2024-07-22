@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.validarEmail = exports.validarCPF = exports.validarCNPJ = exports.tamanhoHumanizado = exports.removerObjetosDuplicados = exports.removerNumeros = exports.removerItensDuplicados = exports.removerExtensao = exports.removerEspacosRepetidos = exports.removerAcentos = exports.possuiObjetosDuplicados = exports.possuiItensDuplicados = exports.ordenarArrayDeObjetos = exports.nomeSiglas = exports.limparTexto = exports.jwtPayload = exports.formatarTelefone = exports.formatarNumero = exports.formatarCpfCnpj = exports.formatarCPF = exports.formatarCNPJ = exports.formatarCEP = exports.extrairNumeros = exports.extrairNomeArquivo = exports.extrairExtensaoArquivo = exports.encurtarNome = exports.copiarTextoParaAreaTransferencia = exports.converteBlobPraString = exports.converteBlobPraBase64 = exports.base64Decode = void 0;
+exports.validarEmail = exports.validarCPF = exports.validarCNPJ = exports.tamanhoHumanizado = exports.removerObjetosDuplicados = exports.removerNumeros = exports.removerItensDuplicados = exports.removerExtensao = exports.removerEspacosRepetidos = exports.removerAcentos = exports.possuiObjetosDuplicados = exports.possuiItensDuplicados = exports.ordenarArrayDeObjetos = exports.nomeSiglas = exports.limparTexto = exports.jwtPayload = exports.jwtCheck = exports.formatarTelefone = exports.formatarNumero = exports.formatarCpfCnpj = exports.formatarCPF = exports.formatarCNPJ = exports.formatarCEP = exports.extrairNumeros = exports.extrairNomeArquivo = exports.extrairExtensaoArquivo = exports.encurtarNome = exports.copiarTextoParaAreaTransferencia = exports.converteBlobPraString = exports.converteBlobPraBase64 = exports.base64Decode = void 0;
 /**
  * Extrai os digitos numericos da string.
  * @param {string} string - String original que pode conter letras e numeros.
@@ -487,4 +487,24 @@ const jwtPayload = token => {
     return null;
   }
 };
+
+/**
+ * Verifica se a string é um token JWT.
+ * @param {string} token
+ */
 exports.jwtPayload = jwtPayload;
+const jwtCheck = token => {
+  if (!token || typeof token !== 'string') return false;
+  const parts = token.split('.');
+  if (parts.length !== 3) return false;
+  try {
+    const header = JSON.parse(base64Decode(parts[0]));
+    const payload = JSON.parse(base64Decode(parts[1]));
+    const signature = parts[2];
+    if (!header || !payload || !signature) return false;
+  } catch (e) {
+    return false;
+  }
+  return true;
+};
+exports.jwtCheck = jwtCheck;

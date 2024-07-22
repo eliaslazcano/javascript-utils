@@ -2,18 +2,17 @@
   "name": "@eliaslazcano/utils",
   "version": "1.0.16",
   "description": "Pacote de funcoes para resumir algoritimos repetitivos",
-  "main": "dist/utils.js",
-  "module": "src/utils.js",
+  "main": "dist/index.js",
   "exports": {
     ".": {
-      "types": "./utils.d.ts",
+      "types": "./dist/utils.d.ts",
       "require": "./dist/utils.js",
       "import": "./src/utils.js"
     }
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel src --out-dir dist"
+    "build": "babel src --out-dir dist && npx tsc"
   },
   "keywords": [
     "eliaslazcano"
@@ -31,7 +30,8 @@
   "devDependencies": {
     "@babel/cli": "^7.24.1",
     "@babel/core": "^7.24.3",
-    "@babel/preset-env": "^7.24.3"
+    "@babel/preset-env": "^7.24.3",
+    "typescript": "^5.5.3"
   },
   "babel": {
     "presets": [
