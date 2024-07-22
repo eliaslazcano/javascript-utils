@@ -1,6 +1,6 @@
 {
   "name": "@eliaslazcano/utils",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "Pacote de funcoes para resumir algoritimos repetitivos",
   "main": "dist/index.js",
   "exports": {
