@@ -89,6 +89,11 @@ export const formatarCNPJ = (cnpj) => {
   return digitos.replace(regex, '$1.$2.$3/$4-$5');
 }
 
+/**
+ * Aplica os pontos para formatar um CPF ou CNPJ, se houver caractere não-numérico ele será removido antes da formatação.
+ * @param {string} cpfCnpj
+ * @returns {string}
+ */
 export const formatarCpfCnpj = (cpfCnpj) => {
   const digitos = extrairNumeros((cpfCnpj || '').toString());
   if (digitos.length === 11) return formatarCPF(digitos);
@@ -431,7 +436,7 @@ export const limparTexto = (string, removerEspacoRepetido = true, removerAcentua
  * @param {Blob} blob
  * @return {Promise<string>}
  */
-export const converteBlobPraString = (blob) => {
+export const converteBlobPraString = blob => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
 
@@ -458,7 +463,7 @@ export const converteBlobPraString = (blob) => {
  * @param {Blob} blob
  * @return {Promise<string>}
  */
-export const converteBlobPraBase64 = (blob) => {
+export const converteBlobPraBase64 = blob => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
 
@@ -476,17 +481,17 @@ export const converteBlobPraBase64 = (blob) => {
 
 /**
  * Remove a extensão de um nome de arquivo.
- * @param nomeArquivo - Nome do arquivo como este 'exemplo.pdf'.
+ * @param {string} nomeArquivo - Nome do arquivo como este 'exemplo.pdf'.
  * @return {string}
  */
-export const removerExtensao = (nomeArquivo) => {
+export const removerExtensao = nomeArquivo => {
   const ultimoPonto = nomeArquivo.lastIndexOf(".");
   return (ultimoPonto !== -1) ? nomeArquivo.substring(0, ultimoPonto) : nomeArquivo;
 }
 
 /**
  * Decodifica uma string que está em formato BASE64.
- * @param encodedString
+ * @param {string} encodedString
  * @returns {string}
  */
 export const base64Decode = encodedString => {
@@ -529,4 +534,23 @@ export const jwtCheck = token => {
   }
 
   return true
+}
+
+/**
+ * Encurta um nome até o limite de palavaras.
+ * @param {string} nome - Nome completo.
+ * @param {number} limite - Máximo de palavras.
+ * @param {string} append - Adiciona uma string no final do resultado caso o nome original seja maior que o limite.
+ * @returns {string} - Nome encurtado.
+ */
+export const reduzirNome = (nome, limite = 2, append = '') => {
+  if (!nome || !nome.trim()) return ''
+  nome = nome.trim()
+  const palavras = nome.split(' ')
+  if (palavras.length <= limite) return nome
+  let novo = ''
+  for (let i = 0; i < limite; i++) novo += palavras[i] + ' '
+  novo = novo.trim()
+  novo += append
+  return novo
 }
