@@ -554,3 +554,16 @@ export const reduzirNome = (nome, limite = 2, append = '') => {
   novo += append
   return novo
 }
+
+/**
+ * Semelhante a função setTimeOut, mas pode ser utilizado em código Async/Await e com possibilidade de ter callback.
+ * @param {number} ms - Tempo de delay em milisegundos.
+ * @param {function} callback - Função callback optional para ser executada após o delay.
+ * @returns {Promise<void>} - Promessa com retorno vazio.
+ */
+export const delay = (ms, callback = null) => {
+  return new Promise(resolve => setTimeout(() => {
+    if (typeof callback === 'function') callback()
+    resolve()
+  }, ms))
+}

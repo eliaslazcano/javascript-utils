@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.reduzirNome = exports.jwtCheck = exports.jwtPayload = exports.base64Decode = exports.removerExtensao = exports.converteBlobPraBase64 = exports.converteBlobPraString = exports.limparTexto = exports.copiarTextoParaAreaTransferencia = exports.removerEspacosRepetidos = exports.extrairExtensaoArquivo = exports.extrairNomeArquivo = exports.tamanhoHumanizado = exports.removerObjetosDuplicados = exports.removerItensDuplicados = exports.possuiObjetosDuplicados = exports.possuiItensDuplicados = exports.ordenarArrayDeObjetos = exports.nomeSiglas = exports.encurtarNome = exports.validarEmail = exports.validarCNPJ = exports.validarCPF = exports.formatarTelefone = exports.formatarCEP = exports.formatarCpfCnpj = exports.formatarCNPJ = exports.formatarCPF = exports.formatarNumero = exports.removerAcentos = exports.removerNumeros = exports.extrairNumeros = void 0;
+exports.delay = exports.reduzirNome = exports.jwtCheck = exports.jwtPayload = exports.base64Decode = exports.removerExtensao = exports.converteBlobPraBase64 = exports.converteBlobPraString = exports.limparTexto = exports.copiarTextoParaAreaTransferencia = exports.removerEspacosRepetidos = exports.extrairExtensaoArquivo = exports.extrairNomeArquivo = exports.tamanhoHumanizado = exports.removerObjetosDuplicados = exports.removerItensDuplicados = exports.possuiObjetosDuplicados = exports.possuiItensDuplicados = exports.ordenarArrayDeObjetos = exports.nomeSiglas = exports.encurtarNome = exports.validarEmail = exports.validarCNPJ = exports.validarCPF = exports.formatarTelefone = exports.formatarCEP = exports.formatarCpfCnpj = exports.formatarCNPJ = exports.formatarCPF = exports.formatarNumero = exports.removerAcentos = exports.removerNumeros = exports.extrairNumeros = void 0;
 /**
  * Extrai os digitos numericos da string.
  * @param {string} string - String original que pode conter letras e numeros.
@@ -599,3 +599,17 @@ const reduzirNome = (nome, limite = 2, append = '') => {
     return novo;
 };
 exports.reduzirNome = reduzirNome;
+/**
+ * Semelhante a função setTimeOut, mas pode ser utilizado em código Async/Await e com possibilidade de ter callback.
+ * @param {number} ms - Tempo de delay em milisegundos.
+ * @param {function} callback - Função callback optional para ser executada após o delay.
+ * @returns {Promise<void>} - Promessa com retorno vazio.
+ */
+const delay = (ms, callback = null) => {
+    return new Promise(resolve => setTimeout(() => {
+        if (typeof callback === 'function')
+            callback();
+        resolve();
+    }, ms));
+};
+exports.delay = delay;
