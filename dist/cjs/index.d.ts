@@ -31,4 +31,4 @@ export function jwtPayload(token: string): any | null;
 export function jwtCheck(token: string): boolean;
 export function reduzirNome(nome: string, limite?: number, append?: string): string;
 export function delay(ms: number, callback?: Function): Promise<void>;
-//# sourceMappingURL=utils.d.ts.map
+//# sourceMappingURL=index.d.ts.map

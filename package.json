@@ -2,17 +2,18 @@
   "name": "@eliaslazcano/utils",
   "version": "1.0.20",
   "description": "Pacote de funcoes para resumir algoritimos repetitivos",
-  "main": "dist/utils.js",
+  "main": "src/index.js",
   "exports": {
     ".": {
-      "import": "./src/utils.js",
-      "require": "./dist/utils.js",
-      "types": "./dist/utils.d.ts"
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
     }
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npx tsc && npx typedoc src/utils.js"
+    "build:cjs": "npx tsc --project tsconfig.cjs.json",
+    "build:esm": "npx tsc --project tsconfig.esm.json",
+    "build": "npm run build:cjs && npm run build:esm"
   },
   "keywords": [
     "eliaslazcano"
@@ -31,19 +32,6 @@
     "@babel/cli": "^7.24.1",
     "@babel/core": "^7.24.3",
     "@babel/preset-env": "^7.24.3",
-    "typedoc": "^0.26.5",
     "typescript": "^5.5.3"
-  },
-  "babel": {
-    "presets": [
-      [
-        "@babel/preset-env",
-        {
-          "targets": {
-            "node": "current"
-          }
-        }
-      ]
-    ]
   }
 }
