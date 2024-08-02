@@ -1,7 +1,7 @@
 export function extrairNumeros(string: string): string;
 export function removerNumeros(string: string): string;
-export function removerAcentos(texto: string, rigoroso?: boolean): string;
-export function formatarNumero(number: number | string): string;
+export function removerAcentos(texto: string): string;
+export function formatarNumero(numero: number | string): string;
 export function formatarCPF(cpf: string): string;
 export function formatarCNPJ(cnpj: string): string;
 export function formatarCpfCnpj(cpfCnpj: string): string;

@@ -9,9 +9,9 @@ export const extrairNumeros = (string) => {
 }
 
 /**
- * Remove caracteres numericos da string.
- * @param {string} string
- * @returns {string}
+ * Remove caracteres numéricos da string.
+ * @param {string} string - A string com caracteres numéricos.
+ * @returns {string} - A string sem caracteres numéricos.
  */
 export const removerNumeros = (string) => {
   const sanitizedString = (string || '').toString(); // Using a constant
@@ -21,56 +21,29 @@ export const removerNumeros = (string) => {
 /**
  * Caracteres com acentuação são trocados pelo equivalente sem acentuação.
  * @param {string} texto - O texto a ser higienizado.
- * @param {boolean} [rigoroso=false] - Define se deve ser usado um algoritmo mais rigoroso para remoção de acentos. O padrão é false.
  * @returns {string} - O texto sem acentos.
  */
-export const removerAcentos = (texto, rigoroso = false) => {
-  if (rigoroso) {
-    return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-  }
-
-  const acentosMap = new Map([
-    ['A', 'Á|À|Ã|Â|Ä'],
-    ['a', 'á|à|ã|â|ä'],
-    ['E', 'É|È|Ê|Ë'],
-    ['e', 'é|è|ê|ë'],
-    ['I', 'Í|Ì|Î|Ï'],
-    ['i', 'í|ì|î|ï'],
-    ['O', 'Ó|Ò|Ô|Õ|Ö'],
-    ['o', 'ó|ò|ô|õ|ö'],
-    ['U', 'Ú|Ù|Û|Ü'],
-    ['u', 'ú|ù|û|ü'],
-    ['C', 'Ç'],
-    ['c', 'ç'],
-    ['N', 'Ñ'],
-    ['n', 'ñ']
-  ]);
-
-  const removerAcento = (texto) => {
-    const reducer = (acc, [key]) => acc.replace(new RegExp(acentosMap.get(key), 'g'), key);
-    return [...acentosMap].reduce(reducer, texto);
-  };
-
-  return removerAcento(texto);
+export const removerAcentos = texto => {
+  return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
 /**
  * Formata um número, utilizando vírgula como separador decimal e ponto como separador de milhar.
- * @param {number|string} number - O número a ser formatado.
+ * @param {number|string} numero - O número a ser formatado.
  * @returns {string} - O número formatado.
  */
-export const formatarNumero = (number) => {
-  if (!number) return '0';
-  if (typeof number !== 'number') number = parseFloat(number.toString());
-  return number.toFixed(2).replace('.', ',').replace(/\d(?=(\d{3})+,)/g, '$&.');
+export const formatarNumero = numero => {
+  if (!numero) return '0';
+  if (typeof numero !== 'number') numero = Number(numero.toString());
+  return numero.toFixed(2).replace('.', ',').replace(/\d(?=(\d{3})+,)/g, '$&.');
 }
 
 /**
  * Formata um CPF, introduzindo os pontos e traços padrões.
- * @param {string} cpf
- * @return {string}
+ * @param {string} cpf - Números do CPF, somente os caracteres numéricos serão usados pra criar a saída.
+ * @return {string} - CPF formatado como neste exemplo: 000.000.000-00
  */
-export const formatarCPF = (cpf) => {
+export const formatarCPF = cpf => {
   const digitos = extrairNumeros((cpf || '').toString());
   if (digitos.length !== 11) return cpf;
   const regex = /^(\d{3})(\d{3})(\d{3})(\d{2})$/;
@@ -79,10 +52,10 @@ export const formatarCPF = (cpf) => {
 
 /**
  * Formata um CNPJ, introduzindo os pontos, barras e traços padrões.
- * @param {string} cnpj
- * @return {string}
+ * @param {string} cnpj - Números do CNPJ, somente os caracteres numéricos serão usados pra criar a saída.
+ * @return {string} - CNPJ formatado como neste exemplo: 00.000.000/0000-00
  */
-export const formatarCNPJ = (cnpj) => {
+export const formatarCNPJ = cnpj => {
   const digitos = extrairNumeros((cnpj || '').toString());
   if (digitos.length !== 14) return cnpj;
   const regex = /^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/;
@@ -91,10 +64,10 @@ export const formatarCNPJ = (cnpj) => {
 
 /**
  * Aplica os pontos para formatar um CPF ou CNPJ, se houver caractere não-numérico ele será removido antes da formatação.
- * @param {string} cpfCnpj
- * @returns {string}
+ * @param {string} cpfCnpj - Números do CPF ou CNPJ.
+ * @returns {string} - CPF/CNPJ formatado.
  */
-export const formatarCpfCnpj = (cpfCnpj) => {
+export const formatarCpfCnpj = cpfCnpj => {
   const digitos = extrairNumeros((cpfCnpj || '').toString());
   if (digitos.length === 11) return formatarCPF(digitos);
   if (digitos.length === 14) return formatarCNPJ(digitos);
@@ -103,10 +76,10 @@ export const formatarCpfCnpj = (cpfCnpj) => {
 
 /**
  * Formata um CEP, introduzindo os pontos e traços padrões.
- * @param {string} cep
- * @return {string}
+ * @param {string} cep - Números do CEP.
+ * @return {string} - Números do CEP com os caracteres separadores.
  */
-export const formatarCEP = (cep) => {
+export const formatarCEP = cep => {
   if (!cep) return cep;
   cep = cep.replace(/\D/g, '');
   if (!cep || cep.length !== 8) return cep;
@@ -115,10 +88,10 @@ export const formatarCEP = (cep) => {
 
 /**
  * Formata um telefone de acordo com a quantidade de dígitos. Funciona com fixo e celular, com ou sem DDD.
- * @param {string} telefone
- * @return {string}
+ * @param {string} telefone - Números do telefone.
+ * @return {string} - Números do telefone com os caracteres de separação.
  */
-export const formatarTelefone = (telefone) => {
+export const formatarTelefone = telefone => {
   telefone = (telefone || '').toString();
   if (!telefone) return 'telefone';
   telefone = telefone.replace(/\D/g, '');
@@ -132,10 +105,10 @@ export const formatarTelefone = (telefone) => {
 
 /**
  * Valida um CPF brasileiro usando a regra do dígito verificador e a quantidade de digitos.
- * @param {string} cpf
- * @returns {boolean}
+ * @param {string} cpf - Números do CPF. Caracteres não-numéricos serão desconsiderados antes do calculo.
+ * @returns {boolean} - Resultado da validação, true: ok, false: inválido.
  */
-export const validarCPF = (cpf) => {
+export const validarCPF = cpf => {
   const sanitizedCpf = (cpf || '').toString().replace(/\D/g, ''); // Using a constant
   const invalidCpfPatterns = [
     '00000000000',
@@ -167,11 +140,11 @@ export const validarCPF = (cpf) => {
 }
 
 /**
- * Valida um CPNJ brasileiro.
+ * Valida um CPNJ brasileiro com a regra do dígito verificador.
  * @param {string} cnpj - Numeros do CPNJ.
- * @returns {boolean}
+ * @returns {boolean} - Resultado da validação, true: ok, false: inválido.
  */
-export const validarCNPJ = (cnpj) => {
+export const validarCNPJ = cnpj => {
   if (!cnpj) return false;
   if (typeof cnpj == 'number') cnpj = cnpj.toString();
   cnpj = cnpj.replace(/\D+/g, '');
@@ -219,8 +192,8 @@ export const validarCNPJ = (cnpj) => {
 
 /**
  * Verifica se a string é um email, obedecendo regras como arroba, pontuação, sem espaços e etc.
- * @param {string} email
- * @return {boolean}
+ * @param {string} email - Endereço de email completo.
+ * @return {boolean} - Resultado da validação. true: ok, false: inválido.
  */
 export const validarEmail = email => /^(([^<>()[\]\\/.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)
 
@@ -424,7 +397,7 @@ export const copiarTextoParaAreaTransferencia = async (texto) => {
  * @return {string} - Texto higienizado.
  */
 export const limparTexto = (string, removerEspacoRepetido = true, removerAcentuacao = true) => {
-  let text = (string || '').toString();
+  let text = (string || '').toString().trim();
   if (!text) return text;
   if (removerEspacoRepetido) text = removerEspacosRepetidos(text);
   if (removerAcentuacao) text = removerAcentos(text);
@@ -491,8 +464,8 @@ export const removerExtensao = nomeArquivo => {
 
 /**
  * Decodifica uma string que está em formato BASE64.
- * @param {string} encodedString
- * @returns {string}
+ * @param {string} encodedString - String em formato base64.
+ * @returns {string} - String em formato normal.
  */
 export const base64Decode = encodedString => {
   if (typeof window !== 'undefined' && typeof window.atob === 'function') return decodeURIComponent(window.atob(encodedString));
@@ -502,8 +475,8 @@ export const base64Decode = encodedString => {
 
 /**
  * Obtem o paylod de um token JWT parseado para Javascript.
- * @param {string} token
- * @returns {any|null}
+ * @param {string} token - Token completo no padrão JSON WEB TOKEN.
+ * @returns {any|null} - null: payload vazio ou token inválido.
  */
 export const jwtPayload = token => {
   const partes = token.split('.')
@@ -517,7 +490,8 @@ export const jwtPayload = token => {
 
 /**
  * Verifica se a string é um token JWT.
- * @param {string} token
+ * @param {string} token - Token completo no padrão JSON WEB TOKEN.
+ * @return {boolean}
  */
 export const jwtCheck = token => {
   if (!token || typeof token !== 'string') return false
