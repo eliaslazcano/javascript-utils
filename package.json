@@ -1,6 +1,6 @@
 {
   "name": "@eliaslazcano/utils",
-  "version": "1.0.22",
+  "version": "1.0.23",
   "description": "Pacote de funcoes para resumir algoritimos repetitivos",
   "main": "./dist/esm/index.js",
   "exports": {
