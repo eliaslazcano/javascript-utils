@@ -1,5 +1,6 @@
 export function extrairNumeros(string: string): string;
 export function removerNumeros(string: string): string;
+export function extrairAlfanumericos(string: string): string;
 export function removerAcentos(texto: string): string;
 export function formatarNumero(numero: number | string): string;
 export function formatarCPF(cpf: string): string;

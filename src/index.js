@@ -19,11 +19,22 @@ export const removerNumeros = (string) => {
 }
 
 /**
+ * Extrai os caracteres alfanuméricos da string, convertendo letras para maiúsculas e descartando símbolos/espaços.
+ * @param {string} string - String original que pode conter símbolos, letras e números.
+ * @returns {string} - String contendo somente letras maiúsculas (A-Z) e números.
+ */
+export const extrairAlfanumericos = (string) => {
+  const sanitizedString = (string || '').toString(); // Using a constant
+  return sanitizedString.toUpperCase().replace(/[^A-Z0-9]/g, '');
+}
+
+/**
  * Caracteres com acentuação são trocados pelo equivalente sem acentuação.
  * @param {string} texto - O texto a ser higienizado.
  * @returns {string} - O texto sem acentos.
  */
 export const removerAcentos = texto => {
+  texto = (texto || '').toString();
   return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
@@ -51,25 +62,25 @@ export const formatarCPF = cpf => {
 }
 
 /**
- * Formata um CNPJ, introduzindo os pontos, barras e traços padrões.
- * @param {string} cnpj - Números do CNPJ, somente os caracteres numéricos serão usados pra criar a saída.
- * @return {string} - CNPJ formatado como neste exemplo: 00.000.000/0000-00
+ * Formata um CNPJ, introduzindo os pontos, barras e traços padrões. Compatível com a nova regra da Receita Federal que permite caracteres alfanuméricos nos 12 primeiros dígitos.
+ * @param {string} cnpj - Números/letras do CNPJ, somente os caracteres alfanuméricos serão usados pra criar a saída.
+ * @return {string} - CNPJ formatado como neste exemplo: 00.000.000/0000-00 ou 12.ABC.345/01DE-35
  */
 export const formatarCNPJ = cnpj => {
-  const digitos = extrairNumeros((cnpj || '').toString());
+  const digitos = extrairAlfanumericos((cnpj || '').toString());
   if (digitos.length !== 14) return cnpj;
-  const regex = /^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/;
+  const regex = /^(.{2})(.{3})(.{3})(.{4})(\d{2})$/;
   return digitos.replace(regex, '$1.$2.$3/$4-$5');
 }
 
 /**
- * Aplica os pontos para formatar um CPF ou CNPJ, se houver caractere não-numérico ele será removido antes da formatação.
- * @param {string} cpfCnpj - Números do CPF ou CNPJ.
+ * Aplica os pontos para formatar um CPF ou CNPJ, se houver caractere que não seja letra/número ele será removido antes da formatação. O CNPJ aceita caracteres alfanuméricos, conforme a nova regra da Receita Federal.
+ * @param {string} cpfCnpj - Números do CPF ou números/letras do CNPJ.
  * @returns {string} - CPF/CNPJ formatado.
  */
 export const formatarCpfCnpj = cpfCnpj => {
-  const digitos = extrairNumeros((cpfCnpj || '').toString());
-  if (digitos.length === 11) return formatarCPF(digitos);
+  const digitos = extrairAlfanumericos((cpfCnpj || '').toString());
+  if (digitos.length === 11 && /^\d+$/.test(digitos)) return formatarCPF(digitos);
   if (digitos.length === 14) return formatarCNPJ(digitos);
   return cpfCnpj;
 }
@@ -81,9 +92,9 @@ export const formatarCpfCnpj = cpfCnpj => {
  */
 export const formatarCEP = cep => {
   if (!cep) return cep;
-  cep = cep.replace(/\D/g, '');
+  cep = (cep || '').toString().replace(/\D/g, '');
   if (!cep || cep.length !== 8) return cep;
-  return cep.substr(0, 2) + '.' + cep.substr(2, 3) + '-' + cep.substr(5);
+  return cep.slice(0, 2) + '.' + cep.slice(2, 5) + '-' + cep.slice(5);
 }
 
 /**
@@ -96,10 +107,10 @@ export const formatarTelefone = telefone => {
   if (!telefone) return 'telefone';
   telefone = telefone.replace(/\D/g, '');
   if (!telefone || telefone.length < 8) return telefone;
-  if (telefone.length === 8) return telefone.substr(0, 4) + '-' + telefone.substr(4);
-  if (telefone.length === 9) return telefone.substr(0, 5) + '-' + telefone.substr(5);
-  if (telefone.length === 10) return '(' + telefone.substr(0, 2) + ') ' + telefone.substr(2, 4) + '-' + telefone.substr(6);
-  if (telefone.length === 11) return '(' + telefone.substr(0, 2) + ') ' + telefone.substr(2, 5) + '-' + telefone.substr(7);
+  if (telefone.length === 8) return telefone.slice(0, 4) + '-' + telefone.slice(4);
+  if (telefone.length === 9) return telefone.slice(0, 5) + '-' + telefone.slice(5);
+  if (telefone.length === 10) return '(' + telefone.slice(0, 2) + ') ' + telefone.slice(2, 6) + '-' + telefone.slice(6);
+  if (telefone.length === 11) return '(' + telefone.slice(0, 2) + ') ' + telefone.slice(2, 7) + '-' + telefone.slice(7);
   return telefone;
 }
 
@@ -110,19 +121,7 @@ export const formatarTelefone = telefone => {
  */
 export const validarCPF = cpf => {
   const sanitizedCpf = (cpf || '').toString().replace(/\D/g, ''); // Using a constant
-  const invalidCpfPatterns = [
-    '00000000000',
-    '11111111111',
-    '22222222222',
-    '33333333333',
-    '44444444444',
-    '55555555555',
-    '66666666666',
-    '77777777777',
-    '88888888888',
-    '99999999999',
-  ];
-  if (sanitizedCpf.length !== 11 || invalidCpfPatterns.includes(sanitizedCpf)) return false;
+  if (sanitizedCpf.length !== 11 || /^(\d)\1*$/.test(sanitizedCpf)) return false;
 
   // Valida 1o digito
   let add = 0;
@@ -140,54 +139,39 @@ export const validarCPF = cpf => {
 }
 
 /**
- * Valida um CPNJ brasileiro com a regra do dígito verificador.
- * @param {string} cnpj - Numeros do CPNJ.
+ * Valida um CNPJ brasileiro com a regra do dígito verificador. Compatível com a nova regra da Receita Federal que permite caracteres alfanuméricos nos 12 primeiros dígitos (os 2 dígitos verificadores continuam numéricos).
+ * @param {string} cnpj - Números/letras do CNPJ.
  * @returns {boolean} - Resultado da validação, true: ok, false: inválido.
  */
 export const validarCNPJ = cnpj => {
   if (!cnpj) return false;
-  if (typeof cnpj == 'number') cnpj = cnpj.toString();
-  cnpj = cnpj.replace(/\D+/g, '');
-  if (cnpj.length !== 14) return false;
+  const sanitizedCnpj = extrairAlfanumericos(cnpj.toString());
+  if (sanitizedCnpj.length !== 14) return false;
 
-  // Elimina CNPJs invalidos conhecidos
-  if (cnpj === '00000000000000' ||
-    cnpj === '11111111111111' ||
-    cnpj === '22222222222222' ||
-    cnpj === '33333333333333' ||
-    cnpj === '44444444444444' ||
-    cnpj === '55555555555555' ||
-    cnpj === '66666666666666' ||
-    cnpj === '77777777777777' ||
-    cnpj === '88888888888888' ||
-    cnpj === '99999999999999')
-    return false;
+  // Elimina CNPJs invalidos conhecidos (todos os caracteres iguais)
+  if (/^(.)\1*$/.test(sanitizedCnpj)) return false;
 
-  // Valida DVs
-  let tamanho = cnpj.length - 2;
-  let numeros = cnpj.substring(0, tamanho);
-  let digitos = cnpj.substring(tamanho);
-  let soma = 0;
-  let pos = tamanho - 7;
-  let i;
-  for (i = tamanho; i >= 1; i--) {
-    soma += numeros.charAt(tamanho - i) * pos--;
-    if (pos < 2) pos = 9;
+  // Conforme a Nota Tecnica da Receita Federal para CNPJ alfanumerico, cada caractere é convertido
+  // pelo seu valor ASCII subtraido de 48 (digitos '0'-'9' viram 0-9, letras 'A'-'Z' viram 17-42).
+  const valores = sanitizedCnpj.split('').map(c => c.charCodeAt(0) - 48);
+
+  const calcularDigitoVerificador = base => {
+    let peso = base.length - 7;
+    let soma = 0;
+    for (let i = 0; i < base.length; i++) {
+      soma += base[i] * peso--;
+      if (peso < 2) peso = 9;
+    }
+    const resto = soma % 11;
+    return resto < 2 ? 0 : 11 - resto;
   }
-  let resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
-  if (resultado.toString() !== digitos.charAt(0)) return false;
 
-  tamanho = tamanho + 1;
-  numeros = cnpj.substring(0, tamanho);
-  soma = 0;
-  pos = tamanho - 7;
-  for (i = tamanho; i >= 1; i--) {
-    soma += numeros.charAt(tamanho - i) * pos--;
-    if (pos < 2)
-      pos = 9;
-  }
-  resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
-  return resultado.toString() === digitos.charAt(1);
+  const digitosVerificadores = valores.slice(12);
+  const primeiroDigito = calcularDigitoVerificador(valores.slice(0, 12));
+  if (primeiroDigito !== digitosVerificadores[0]) return false;
+
+  const segundoDigito = calcularDigitoVerificador(valores.slice(0, 12).concat(primeiroDigito));
+  return segundoDigito === digitosVerificadores[1];
 }
 
 /**
@@ -208,7 +192,7 @@ export const encurtarNome = (fullname, useSecondName = false) => {
   const trimmedFullname = fullname.trim();
   if (!trimmedFullname) return '';
 
-  const names = trimmedFullname.split(' ');
+  const names = trimmedFullname.split(/\s+/);
   if (names.length === 1) return names[0];
   const firstName = names[0];
   const lastName = names[names.length - 1];
@@ -224,11 +208,11 @@ export const encurtarNome = (fullname, useSecondName = false) => {
  * @returns {string} - Iniciais.
  */
 export const nomeSiglas = (nome) => {
-  nome = nome.trim();
+  nome = (nome || '').toString().trim();
   if (!nome) return '';
-  const names = nome.split(' ');
-  if (names.length === 1) return names[0].substr(0,2);
-  else return names[0].substr(0,1) + names[names.length - 1].substr(0,1);
+  const names = nome.split(/\s+/);
+  if (names.length === 1) return names[0].slice(0, 2);
+  else return names[0].slice(0, 1) + names[names.length - 1].slice(0, 1);
 }
 
 /**
@@ -294,7 +278,7 @@ export const possuiObjetosDuplicados = (array, propriedade) => {
  * @returns {Array} - Um novo array sem itens duplicados.
  */
 export const removerItensDuplicados = (array) => {
-  return array.filter((i, index) => array.indexOf(i) === index)
+  return [...new Set(array)]
 }
 
 /**
@@ -339,6 +323,7 @@ export const tamanhoHumanizado = (bytes, binary = false) => {
  * @returns {string} - O nome do arquivo (com extensão).
  */
 export const extrairNomeArquivo = (caminho) => {
+  caminho = (caminho || '').toString();
   return caminho.replace(/^.*[\\/]/, '');
 }
 
@@ -348,10 +333,10 @@ export const extrairNomeArquivo = (caminho) => {
  * @returns {string|null} - A extensão do arquivo, ou null se não houver extensão.
  */
 export const extrairExtensaoArquivo = (nomeArquivo) => {
-  const regex = new RegExp('[^.]+$');
-  const extension = nomeArquivo.match(regex);
-  if (extension.length !== 1) return null;
-  return extension[0];
+  nomeArquivo = (nomeArquivo || '').toString();
+  const ultimoPonto = nomeArquivo.lastIndexOf('.');
+  if (ultimoPonto === -1 || ultimoPonto === nomeArquivo.length - 1) return null;
+  return nomeArquivo.substring(ultimoPonto + 1);
 }
 
 /**
@@ -360,6 +345,7 @@ export const extrairExtensaoArquivo = (nomeArquivo) => {
  * @returns {string} - O texto higienizado.
  */
 export const removerEspacosRepetidos = (texto) => {
+  texto = (texto || '').toString();
   return texto.trim().replace(/ {2,}/g, ' ');
 }
 
@@ -458,6 +444,7 @@ export const converteBlobPraBase64 = blob => {
  * @return {string}
  */
 export const removerExtensao = nomeArquivo => {
+  nomeArquivo = (nomeArquivo || '').toString();
   const ultimoPonto = nomeArquivo.lastIndexOf(".");
   return (ultimoPonto !== -1) ? nomeArquivo.substring(0, ultimoPonto) : nomeArquivo;
 }
@@ -469,7 +456,7 @@ export const removerExtensao = nomeArquivo => {
  */
 export const base64Decode = encodedString => {
   if (typeof window !== 'undefined' && typeof window.atob === 'function') return decodeURIComponent(window.atob(encodedString));
-  else if (typeof Buffer !== 'undefined') return Buffer.from(encodedString, 'base64').toString('ascii');
+  else if (typeof Buffer !== 'undefined') return Buffer.from(encodedString, 'base64').toString('utf-8');
   else return ''
 }
 
@@ -479,6 +466,7 @@ export const base64Decode = encodedString => {
  * @returns {any|null} - null: payload vazio ou token inválido.
  */
 export const jwtPayload = token => {
+  if (!token || typeof token !== 'string') return null
   const partes = token.split('.')
   if (partes.length !== 3) return null
   try {
@@ -520,7 +508,7 @@ export const jwtCheck = token => {
 export const reduzirNome = (nome, limite = 2, append = '') => {
   if (!nome || !nome.trim()) return ''
   nome = nome.trim()
-  const palavras = nome.split(' ')
+  const palavras = nome.split(/\s+/)
   if (palavras.length <= limite) return nome
   let novo = ''
   for (let i = 0; i < limite; i++) novo += palavras[i] + ' '
